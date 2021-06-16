@@ -22,4 +22,19 @@ class TransactionRepositoryTest {
         Assertions.assertEquals("06/16/2021", transactionRepository.allTransactions().get(0).date());
         Assertions.assertEquals(100, transactionRepository.allTransactions().get(0).amount());
     }
+
+    @Test
+    void should_decrease_amount_when_transaction_withdraw() {
+        //given
+        Clock mockClock = mock(Clock.class);
+        TransactionRepository transactionRepository = new TransactionRepository(mockClock);
+        Mockito.when(mockClock.todayAsString()).thenReturn("06/16/2021");
+
+        //when
+        transactionRepository.addWithdraw(100);
+
+        //then
+        Assertions.assertEquals("06/16/2021", transactionRepository.allTransactions().get(0).date());
+        Assertions.assertEquals(-100, transactionRepository.allTransactions().get(0).amount());
+    }
 }
